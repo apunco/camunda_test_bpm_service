@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1q7ol94" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.32.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:process id="case-process-evaluation" name="CASE_PROCESS" isExecutable="true" camunda:versionTag="1.0.0" camunda:historyTimeToLive="180">
+    <bpmn:documentation>Process for calculation and evaluation of a risk.</bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="caseId" type="string" />
+          <camunda:formField id="caseType" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0067zrq</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0067zrq" sourceRef="StartEvent_1" targetRef="case_service_worker" />
+    <bpmn:serviceTask id="case_service_worker" name="Case Service Worker" camunda:type="external" camunda:topic="case-service">
+      <bpmn:documentation>Callse a service worker that calculates risk level for the case</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="calculatedRisk" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0067zrq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0077xud</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0077xud" sourceRef="case_service_worker" targetRef="Activity_0eqjad0" />
+    <bpmn:userTask id="Activity_0eqjad0" name="User Evalution Task">
+      <bpmn:extensionElements>
+        <camunda:formData />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="calculatedRisk" />
+          <camunda:outputParameter name="isApproved" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0077xud</bpmn:incoming>
+      <bpmn:outgoing>Flow_1k0308y</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1er3u12" name="isApproved">
+      <bpmn:incoming>Flow_1k0308y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p7l7r5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_187ijjc</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1k0308y" sourceRef="Activity_0eqjad0" targetRef="Gateway_1er3u12" />
+    <bpmn:endEvent id="Event_0cdjyhh">
+      <bpmn:documentation>Case Approved</bpmn:documentation>
+      <bpmn:incoming>Flow_1t7e9e0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1p7l7r5" sourceRef="Gateway_1er3u12" targetRef="Event_07nbnh8">
+      <bpmn:documentation>Approved</bpmn:documentation>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_06bzjht">
+      <bpmn:incoming>Flow_187ijjc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_187ijjc" sourceRef="Gateway_1er3u12" targetRef="Event_06bzjht">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!isApproved}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1t7e9e0" sourceRef="Event_07nbnh8" targetRef="Event_0cdjyhh" />
+    <bpmn:intermediateCatchEvent id="Event_07nbnh8">
+      <bpmn:incoming>Flow_1p7l7r5</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t7e9e0</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1vitebm">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">30</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:textAnnotation id="TextAnnotation_12d3ogd">
+      <bpmn:text>Case Approved</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1whpa8a" associationDirection="None" sourceRef="Event_0cdjyhh" targetRef="TextAnnotation_12d3ogd" />
+    <bpmn:textAnnotation id="TextAnnotation_0ubo3os">
+      <bpmn:text>Case Denied</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_137ag2a" associationDirection="None" sourceRef="Event_06bzjht" targetRef="TextAnnotation_0ubo3os" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="case-process-evaluation">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t10mx3_di" bpmnElement="case_service_worker">
+        <dc:Bounds x="310" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l90szf_di" bpmnElement="Activity_0eqjad0">
+        <dc:Bounds x="550" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1er3u12_di" bpmnElement="Gateway_1er3u12" isMarkerVisible="true">
+        <dc:Bounds x="745" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="692" y="203" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cdjyhh_di" bpmnElement="Event_0cdjyhh">
+        <dc:Bounds x="1002" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_06bzjht_di" bpmnElement="Event_06bzjht">
+        <dc:Bounds x="1002" y="312" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1l4ueci_di" bpmnElement="Event_07nbnh8">
+        <dc:Bounds x="822" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1whpa8a_di" bpmnElement="Association_1whpa8a">
+        <di:waypoint x="1011" y="165" />
+        <di:waypoint x="979" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_137ag2a_di" bpmnElement="Association_137ag2a">
+        <di:waypoint x="1011" y="315" />
+        <di:waypoint x="979" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_12d3ogd_di" bpmnElement="TextAnnotation_12d3ogd">
+        <dc:Bounds x="920" y="80" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0ubo3os_di" bpmnElement="TextAnnotation_0ubo3os">
+        <dc:Bounds x="920" y="230" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0067zrq_di" bpmnElement="Flow_0067zrq">
+        <di:waypoint x="218" y="250" />
+        <di:waypoint x="310" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0077xud_di" bpmnElement="Flow_0077xud">
+        <di:waypoint x="410" y="250" />
+        <di:waypoint x="550" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1k0308y_di" bpmnElement="Flow_1k0308y">
+        <di:waypoint x="650" y="250" />
+        <di:waypoint x="745" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p7l7r5_di" bpmnElement="Flow_1p7l7r5">
+        <di:waypoint x="770" y="225" />
+        <di:waypoint x="770" y="180" />
+        <di:waypoint x="822" y="180" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="762" y="200" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_187ijjc_di" bpmnElement="Flow_187ijjc">
+        <di:waypoint x="770" y="275" />
+        <di:waypoint x="770" y="330" />
+        <di:waypoint x="1002" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t7e9e0_di" bpmnElement="Flow_1t7e9e0">
+        <di:waypoint x="858" y="180" />
+        <di:waypoint x="1002" y="180" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
