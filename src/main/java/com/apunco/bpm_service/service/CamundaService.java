@@ -3,7 +3,6 @@ package com.apunco.bpm_service.service;
 import com.apunco.openapi.model.StartCaseRequest;
 import com.apunco.openapi.model.StartCaseResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.camunda.community.rest.client.api.ProcessDefinitionApi;
 import org.camunda.community.rest.client.dto.ProcessInstanceWithVariablesDto;
 import org.camunda.community.rest.client.dto.StartProcessInstanceDto;
