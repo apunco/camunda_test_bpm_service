@@ -1,8 +1,8 @@
 package com.apunco.bpm_service.service;
 
-import com.apunco.bpm_service.dto.StartCaseRequest;
-import com.apunco.bpm_service.dto.StartCaseResponse;
-import com.apunco.bpm_service.exception.ErrorResponse;
+import com.apunco.openapi.model.ErrorResponse;
+import com.apunco.openapi.model.StartCaseRequest;
+import com.apunco.openapi.model.StartCaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.camunda.community.rest.client.api.ProcessDefinitionApi;
 import org.camunda.community.rest.client.dto.ProcessInstanceWithVariablesDto;
@@ -35,20 +35,20 @@ public class CamundaService {
             processInstanceWithVariablesDto = processDefinitionApi
                     .startProcessInstanceByKey(caseValidationKey, startProcessInstanceDto);
         } catch (ApiException e) {
-            throw new ErrorResponse(String.valueOf(e.getCode()), e.getMessage());
+            throw new RuntimeException(e);
         }
 
-        return StartCaseResponse.builder()
-                .processInstanceId(processInstanceWithVariablesDto.getCaseInstanceId())
-                .build();
+        StartCaseResponse startCaseResponse = new StartCaseResponse();
+        startCaseResponse.setProcessInstanceId(processInstanceWithVariablesDto.getCaseInstanceId());
+        return startCaseResponse;
     }
 
     private StartProcessInstanceDto initStartProcessDto(StartCaseRequest startCaseRequest){
         var caseId = new VariableValueDto();
-        caseId.setValue(startCaseRequest.caseId());
+        caseId.setValue(startCaseRequest.getCaseId());
 
         var caseType = new VariableValueDto();
-        caseType.setValue(startCaseRequest.caseType());
+        caseType.setValue(startCaseRequest.getCaseType());
 
         var variables = Map.of(
                 CASE_ID, caseId,

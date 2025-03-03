@@ -1,0 +1,62 @@
+openapi: 3.0.1
+info:
+  title: bpm-service
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8081
+paths:
+  /case/start:
+    post:
+      summary: Start a case process
+      description: This method starts a case process.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/StartCaseRequest'
+      responses:
+        '200':
+          description: Case process started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartCaseResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CaseType:
+      type: string
+      minLength: 1
+      enum: [ IMPORTANT_CASE, NOT_SO_IMPORTANT_CASE, VERY_IMPORTANT_CASE ]
+    StartCaseRequest:
+        type: object
+        required:
+            - caseId
+            - caseType
+        properties:
+          caseId:
+            type: string
+            minLength: 1
+          caseType:
+            $ref: '#/components/schemas/CaseType'
+    StartCaseResponse:
+        type: object
+        required:
+            - processInstanceId
+        properties:
+          processInstanceId:
+            type: string
+            minLength: 1
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string

@@ -1,8 +1,8 @@
 package com.apunco.bpm_service.controller;
 
-import com.apunco.bpm_service.dto.StartCaseRequest;
-import com.apunco.bpm_service.dto.StartCaseResponse;
 import com.apunco.bpm_service.service.CamundaService;
+import com.apunco.openapi.model.StartCaseRequest;
+import com.apunco.openapi.model.StartCaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
