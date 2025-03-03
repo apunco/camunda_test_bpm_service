@@ -1,9 +1,9 @@
 package com.apunco.bpm_service.service;
 
-import com.apunco.openapi.model.ErrorResponse;
 import com.apunco.openapi.model.StartCaseRequest;
 import com.apunco.openapi.model.StartCaseResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.community.rest.client.api.ProcessDefinitionApi;
 import org.camunda.community.rest.client.dto.ProcessInstanceWithVariablesDto;
 import org.camunda.community.rest.client.dto.StartProcessInstanceDto;
@@ -21,7 +21,7 @@ public class CamundaService {
     private static final String CASE_ID = "caseId";
     private static final String CASE_TYPE = "caseType";
 
-    @Value("camunda-process.case-validation-key")
+    @Value("${camunda-process.case-validation-key}")
     private String caseValidationKey;
 
     private final ProcessDefinitionApi processDefinitionApi;
@@ -30,7 +30,6 @@ public class CamundaService {
         ProcessInstanceWithVariablesDto processInstanceWithVariablesDto;
 
         StartProcessInstanceDto startProcessInstanceDto = initStartProcessDto(startCaseRequest);
-
         try {
             processInstanceWithVariablesDto = processDefinitionApi
                     .startProcessInstanceByKey(caseValidationKey, startProcessInstanceDto);
@@ -39,7 +38,7 @@ public class CamundaService {
         }
 
         StartCaseResponse startCaseResponse = new StartCaseResponse();
-        startCaseResponse.setProcessInstanceId(processInstanceWithVariablesDto.getCaseInstanceId());
+        startCaseResponse.setProcessInstanceId(processInstanceWithVariablesDto.getId());
         return startCaseResponse;
     }
 

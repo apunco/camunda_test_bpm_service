@@ -6,3 +6,11 @@ camunda:
     client:
       base-url: http://localhost:8081/engine-rest
 
+camunda-process:
+  case-validation-key: "case-process-evaluation"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "openapi, swagger-ui"

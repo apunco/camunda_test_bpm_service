@@ -18,5 +18,4 @@ public class CamundaConfig {
         props.setFormResources("classpath:/camunda/**/*.form");
         return props;
     }
-
 }
