@@ -114,12 +114,31 @@
                 <version>7.8.0</version>
                 <executions>
                     <execution>
+                        <id>bpm-service</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <inputSpec>
                                 ${project.basedir}/src/main/resources/openapi-definitions/bpm-service-api.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>com.apunco.openapi.api</apiPackage>
+                            <modelPackage>com.apunco.openapi.model</modelPackage>
+                            <configOptions>
+                                <useSpringBoot3>true</useSpringBoot3>
+                            </configOptions>
+                            <ignoreFileOverride>.openapi-generator-ignore</ignoreFileOverride>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>case-service</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/openapi-definitions/case-service-api.yaml
                             </inputSpec>
                             <generatorName>spring</generatorName>
                             <apiPackage>com.apunco.openapi.api</apiPackage>

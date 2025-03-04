@@ -11,6 +11,7 @@ camunda-process:
   calculate-risk-worker-topic: "calculate_risk_worker"
 
 case-service:
+  url: "localhost:8082"
   username: "user"
   password: "pass"
 

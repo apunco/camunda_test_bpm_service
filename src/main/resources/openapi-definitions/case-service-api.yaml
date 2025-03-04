@@ -1,0 +1,53 @@
+openapi: 3.0.1
+info:
+  title: bpm-service
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8081
+paths:
+  /risk/calculate:
+    get:
+      summary: Calculate risk
+      description: Calculate risk for given caseType
+      operationId: calculateRisk
+      parameters:
+        - name: caseType
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: Case process started successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateRiskResponse'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CaseType:
+      type: string
+      minLength: 1
+      enum: [ IMPORTANT_CASE, NOT_SO_IMPORTANT_CASE, VERY_IMPORTANT_CASE ]
+    CalculateRiskResponse:
+      type: object
+      required:
+        - riskScore
+      properties:
+        riskScore:
+          type: string
+          enum: [ HIGH, MEDIUM, LOW ]
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
