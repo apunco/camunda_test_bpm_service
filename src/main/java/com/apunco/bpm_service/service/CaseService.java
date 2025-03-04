@@ -2,7 +2,6 @@ package com.apunco.bpm_service.service;
 
 import com.apunco.bpm_service.client.CaseServiceClient;
 import com.apunco.openapi.model.CalculateRiskResponse;
-import com.apunco.openapi.model.CaseType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.apunco.bpm_service.worker;
 
 import com.apunco.bpm_service.service.CaseService;
-import com.apunco.openapi.model.CaseType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.client.spring.annotation.ExternalTaskSubscription;
@@ -9,8 +8,8 @@ import org.camunda.bpm.client.task.ExternalTask;
 import org.camunda.bpm.client.task.ExternalTaskHandler;
 import org.camunda.bpm.client.task.ExternalTaskService;
 import org.camunda.bpm.engine.variable.Variables;
-import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
