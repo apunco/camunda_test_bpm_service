@@ -12,8 +12,8 @@ public class CaseService {
 
     private final CaseServiceClient caseServiceClient;
 
-    public String calculateRisk(CaseType caseType){
-        CalculateRiskResponse response = caseServiceClient.calculateRiskResponse(caseType.getValue());
+    public String calculateRisk(String caseType){
+        CalculateRiskResponse response = caseServiceClient.calculateRiskResponse(caseType);
         return response.getRiskScore().getValue();
     }
 }

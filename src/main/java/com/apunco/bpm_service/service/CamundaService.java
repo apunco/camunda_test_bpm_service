@@ -1,6 +1,6 @@
 package com.apunco.bpm_service.service;
 
-import com.apunco.openapi.model.StartCaseRequest;
+import com.apunco.bpm_service.dto.StartCaseRequest;
 import com.apunco.openapi.model.StartCaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.camunda.community.rest.client.api.ProcessDefinitionApi;
@@ -25,7 +25,7 @@ public class CamundaService {
 
     private final ProcessDefinitionApi processDefinitionApi;
 
-    public StartCaseResponse startCaseEvaluationProcess(StartCaseRequest startCaseRequest){
+    public StartCaseResponse startCaseEvaluationProcess(com.apunco.bpm_service.dto.StartCaseRequest startCaseRequest){
         ProcessInstanceWithVariablesDto processInstanceWithVariablesDto;
 
         StartProcessInstanceDto startProcessInstanceDto = initStartProcessDto(startCaseRequest);
@@ -43,10 +43,10 @@ public class CamundaService {
 
     private StartProcessInstanceDto initStartProcessDto(StartCaseRequest startCaseRequest){
         var caseId = new VariableValueDto();
-        caseId.setValue(startCaseRequest.getCaseId());
+        caseId.setValue(startCaseRequest.caseId());
 
         var caseType = new VariableValueDto();
-        caseType.setValue(startCaseRequest.getCaseType());
+        caseType.setValue(startCaseRequest.caseType());
 
         var variables = Map.of(
                 CASE_ID, caseId,

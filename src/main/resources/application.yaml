@@ -1,3 +1,5 @@
+spring.application.name: bpm_service
+
 server:
   port: 8080
 
@@ -8,15 +10,20 @@ camunda:
 
 camunda-process:
   case-validation-key: "case-process-evaluation"
-  calculate-risk-worker-topic: "calculate_risk_worker"
 
 case-service:
   url: "localhost:8082"
   username: "user"
   password: "pass"
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "openapi, swagger-ui"
+worker-config:
+  retries: 1
+  retryPeriod: 1000
+
+basic-auth:
+  username: user
+  password: pass
+
+logging:
+  level:
+    org.springframework.security: DEBUG

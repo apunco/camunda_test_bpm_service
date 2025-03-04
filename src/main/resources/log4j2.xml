@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+    <Appenders>
+        <Console name="appConsole" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger level="DEBUG" name="org.springframework.web" additivity="false">
+            <appender-ref ref="appConsole"/>
+        </Logger>
+        <Root level="INFO" additivity="false">
+            <appender-ref ref="appConsole"/>
+        </Root>
+    </Loggers>
+</Configuration>
